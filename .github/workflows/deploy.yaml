@@ -1,4 +1,3 @@
-
 name: build our image
 
 on:
@@ -17,21 +16,24 @@ jobs:
         with:
           version: latest
 
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_GITHUB_ACTIONS }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_GITHUB_ACTIONS }}
-      #     aws-region: ${{ vars.AWS_REGION }}  
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_GITHUB_ACTIONS }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_GITHUB_ACTIONS }}
+          aws-region: ${{ vars.AWS_REGION }}  
 
       # - name: Login to Amazon ECR
       #   id: login-ecr
       #   uses: aws-actions/amazon-ecr-login@v1
+      - name: Login to Amazon ECR Public
+        id: login-ecr-public
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: public
 
       - name: build the image
         run: |
-          REPOSITORY_URI=675021605538.dkr.ecr.ap-south-1.amazonaws.com/multiarch-flask
-
           docker buildx build --push \
-            --tag $REPOSITORY_URI:latest \
+            --tag public.ecr.aws/j3w6b3z1/multiarch-flask:latest \
             --platform linux/amd64,linux/arm/v7,linux/arm64 .
