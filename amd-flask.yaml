@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amd-flask
+spec:
+  replicas: 1 # Number of pods to run (can be scaled)
+  selector:
+    matchLabels:
+      app: amd-flask
+  template:
+    metadata:
+      labels:
+        app: amd-flask
+    spec:
+      nodeSelector:  # Added node selector section
+        beta.kubernetes.io/arch: "amd64"
+      containers:
+      - name: amd-flask
+        image: public.ecr.aws/o7h8o8p7/multiarch-flask:latest # Replace with your image details
+        ports:
+        - containerPort: 8080

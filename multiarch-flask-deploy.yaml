@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multiarch-flask
+spec:
+  replicas: 1 # Number of pods to run (can be scaled)
+  selector:
+    matchLabels:
+      app: multiarch-flask
+  template:
+    metadata:
+      labels:
+        app: multiarch-flask
+    spec:
+      nodeSelector:  # Added node selector section
+        beta.kubernetes.io/arch: "arm64"
+      containers:
+      - name: multiarch-flask
+        image: public.ecr.aws/o7h8o8p7/multiarch-flask:latest # Replace with your image details
+        ports:
+        - containerPort: 8080
+
