@@ -32,7 +32,7 @@ jobs:
         with:
           registry-type: public
 
-      - name: build the image
+      - name: build the image2
         run: |
           docker buildx build --push \
             --tag public.ecr.aws/j3w6b3z1/multiarch-flask:latest \
